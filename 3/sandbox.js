@@ -29,21 +29,33 @@ class makeTeam {
     this.id = teamId++;
     this.name = name;
     this.money = money;
-    this.isDuplicated = Boolean(teamArray.find((item) => item.name === name));
   }
 }
 
-// const p1 = new makePlayer("ali", 2, 3, 4, 5);
-// playerArray.push(p1);
+orders.forEach((item) => {
+  item = item.split(" ");
+  if (item === "rank") {
+    console.log("rank");
+  } else if (item[0] === "new" && item[1] === "player") {
+    console.log("new");
+    playerArray.push(
+      new makePlayer(
+        item[2],
+        Number(item[3]),
+        Number(item[4]),
+        Number(item[5]),
+        Number(item[6])
+      )
+    );
+  } else if (item[0] === "new" && item[1] === "team") {
+    console.log("new team");
+    const isDuplicated = Boolean(
+      teamArray.find((item_) => item_.name === item[2])
+    );
+    if (!isDuplicated) {
+      teamArray.push(new makeTeam(item[2], Number(item[3])));
+    }
+  }
+});
 
-// const p2 = new makePlayer("hassan", 5, 4, 3, 2);
-// playerArray.push(p2);
-
-const t1 = new makeTeam("real", 20);
-teamArray.push(t1);
-
-const t2 = new makeTeam("barca", 20);
-teamArray.push(t2);
-const t3 = new makeTeam("real", 20);
-teamArray.push(t3);
 console.log(teamArray);
