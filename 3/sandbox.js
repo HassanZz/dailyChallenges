@@ -12,6 +12,7 @@ let playerId = 0;
 let teamId = 0;
 const teamArray = new Array();
 const playerArray = new Array();
+const teamPlayerArray = new Array();
 
 class makePlayer {
   constructor(name, price, speed, finishing, defence) {
@@ -33,8 +34,32 @@ class makeTeam {
 }
 
 const buyPlayer = (pID, tID) => {
-  playerExist = Boolean(playerArray.find((item) => item.id === pID));
-  teamExist = Boolean(teamArray.find((item) => item.id === tID));
+  const player = playerArray.find((item) => item.id === pID);
+  const team = teamArray.find((item) => item.id === tID);
+  const playerHasTeam = Boolean(
+    teamPlayerArray.find((item) => item.teamID === tID)
+  );
+  if (!Boolean(player)) {
+    console.log("player does not exist!");
+  } else if (!Boolean(team)) {
+    console.log("team does not exist");
+  } else if (playerHasTeam) {
+    console.log("player already has a team");
+  } else if (team.money < player.price) {
+    console.log("the team has no enough money");
+  } else {
+    teamPlayerArray.push({ playerID: pID, teamID: tID });
+    teamArray.map((item) => {
+      if (item.id === team.id) {
+        return {
+          money: team.money - player.price,
+          name: item.name,
+          id: item.id,
+        };
+      }
+    });
+    console.log("player added to the team successfully");
+  }
 };
 
 orders.forEach((item) => {
@@ -60,6 +85,9 @@ orders.forEach((item) => {
     if (!isDuplicated) {
       teamArray.push(new makeTeam(item[2], Number(item[3])));
     }
+  } else if (item[0] === "buy") {
+    console.log("buy player");
+    buyPlayer(Number(item[1]), Number(item[2]));
   }
 });
 
