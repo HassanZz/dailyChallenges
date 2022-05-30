@@ -32,6 +32,11 @@ class makeTeam {
   }
 }
 
+const buyPlayer = (pID, tID) => {
+  playerExist = Boolean(playerArray.find((item) => item.id === pID));
+  teamExist = Boolean(teamArray.find((item) => item.id === tID));
+};
+
 orders.forEach((item) => {
   item = item.split(" ");
   if (item === "rank") {
